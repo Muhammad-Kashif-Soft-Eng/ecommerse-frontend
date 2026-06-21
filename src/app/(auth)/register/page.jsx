@@ -12,8 +12,8 @@ import {
     FaEyeSlash,
 } from "react-icons/fa";
 
-const API_URL = "http://localhost:5000/api";
-// const API_URL = process.env.ECOMMERSE_BACKEND_URL || "http://localhost:5000/api";
+// const API_URL = "http://localhost:5000/api";
+const API_URL = process.env.ECOMMERSE_BACKEND_URL || "http://localhost:5000/api";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
