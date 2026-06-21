@@ -12,8 +12,7 @@ import {
     FaEyeSlash,
 } from "react-icons/fa";
 
-// const API_URL = "http://localhost:5000/api";
-const API_URL = "https://ecommerse-backend-plum.vercel.app/api/" || "http://localhost:5000/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -40,6 +39,7 @@ export default function RegisterPage() {
             reset();
 
         } catch (err) {
+            console.log(err)
             // axios puts the failed response here, NOT in the try block
             const status = err.response?.status;
             const message = err.response?.data?.message;
