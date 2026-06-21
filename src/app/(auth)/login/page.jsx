@@ -1,12 +1,10 @@
 "use client";
 import axios from "axios";
-import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
 import {
-    FaUser,
     FaEnvelope,
     FaLock,
     FaExclamationCircle,
@@ -15,9 +13,10 @@ import {
     FaEyeSlash,
 } from "react-icons/fa";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const API = "http://localhost:5000/api";
+// const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
-export default function RegisterPage() {
+export default function LoginPage() {
 
     const router = useRouter();
 
@@ -29,29 +28,21 @@ export default function RegisterPage() {
         register,
         handleSubmit,
         setError,
-        clearErrors,
         formState: { errors, isSubmitting },
         reset,
     } = useForm({ mode: "onBlur" });
 
     const onSubmit = async (formData) => {
-        clearErrors();
         setServerError("");
         setSuccess(false);
 
-        const payload = {
-            username: formData.username.trim(),
-            email: formData.email.trim().toLowerCase(),
-            password: formData.password,
-        };
-
         try {
-            await axios.post(`${API_URL}/auth/register`, payload);
+            await axios.post(`${API}/auth/login`, formData);
             setSuccess(true);
             reset();
 
             setTimeout(() => {
-                router.push("/login");
+                router.push("/dashboard");
             }, 2000);
 
         } catch (err) {
@@ -59,15 +50,19 @@ export default function RegisterPage() {
             const status = err.response?.status;
             const message = err.response?.data?.message;
 
-            if (status === 409) {
+            if (status === 401) {
                 setError("email", {
                     type: "manual",
-                    message: message || "User with this email already exists.",
+                    message: message || "Invalid email or password.",
+                });
+                setError("password", {
+                    type: "manual",
+                    message: message || "Invalid email or password.",
                 });
             } else if (status === 400) {
                 setServerError(message || "Please fill in all fields.");
             } else if (status) {
-                setServerError(message || "Something went wrong. Please try again.");
+                setServerError(message || "Something wrong. Please try again.");
             } else {
                 setServerError("Could not connect to the server. Please try again.");
             }
@@ -75,10 +70,11 @@ export default function RegisterPage() {
     };
 
     const fieldWrapperClass = (hasError) =>
-        `flex items-center border rounded-xl px-4 py-3 transition-all duration-200 ${hasError
+    `flex items-center border rounded-xl px-4 py-3 transition-all duration-200 ${
+        hasError
             ? "border-red-300 bg-red-50 shadow-sm"
             : "border-gray-200 bg-white hover:border-gray-300 shadow-sm"
-        } focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500`;
+    } focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500`;
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4 sm:p-6 md:p-8 relative overflow-hidden">
@@ -92,21 +88,18 @@ export default function RegisterPage() {
                 {/* Header */}
                 <div className="text-center mb-8">
                     <h2 className="text-3xl font-bold text-gray-800 tracking-tight">
-                        Create Your Account
+                        Welcome Back
                     </h2>
                     <p className="text-gray-500 mt-2 text-sm md:text-base">
-                        Join us today. Fill in your details to get started.
+                        Log in to your account to continue.
                     </p>
-                </div>
+ </div>
 
                 {/* Success Message */}
                 {success && (
                     <div className="mb-6 flex items-start gap-3 bg-green-50 border border-green-200 text-green-700 rounded-xl px-4 py-3 shadow-sm transition-all duration-300">
                         <FaCheckCircle className="mt-0.5 shrink-0 text-green-500 text-lg" />
-                        <div>
-                            <p className="font-medium text-sm">Account created successfully!</p>
-                            <p className="text-xs text-green-600 mt-1">You can now log in with your credentials.</p>
-                        </div>
+                        <p className="font-medium text-sm">Logged in successfully!</p>
                     </div>
                 )}
 
@@ -123,38 +116,6 @@ export default function RegisterPage() {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-                    {/* Username */}
-                    <div>
-                        <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-1.5 ml-1">
-                            Username
-                        </label>
-                        <div className={fieldWrapperClass(errors.username)}>
-                            <FaUser className={`mr-3 ${errors.username ? "text-red-400" : "text-gray-400"}`} />
-                            <input
-                                id="username"
-                                type="text"
-                                placeholder="Enter username"
-                                {...register("username", {
-                                    required: "Username is required",
-                                    minLength: { value: 3, message: "Username must be at least 3 characters" },
-                                    maxLength: { value: 30, message: "Username must be under 30 characters" },
-                                    pattern: {
-                                        value: /^[a-zA-Z0-9_]+$/,
-                                        message:
-                                            "Only letters, numbers and underscores allowed",
-                                    }
-                                })}
-                                className="w-full outline-none text-gray-800 bg-transparent placeholder:text-gray-400"
-                            />
-                        </div>
-                        {errors.username && (
-                            <p className="flex items-center gap-1.5 text-red-500 text-xs mt-2 ml-1 font-medium">
-                                <FaExclamationCircle className="shrink-0" />
-                                {errors.username.message}
-                            </p>
-                        )}
-                    </div>
-
                     {/* Email */}
                     <div>
                         <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-1.5 ml-1">
@@ -182,9 +143,7 @@ export default function RegisterPage() {
                                 {errors.email.message}
                             </p>
                         )}
-                    </div>
-
-                    {/* Password */}
+                    </div>                    {/* Password */}
                     <div>
                         <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-1.5 ml-1">
                             Password
@@ -198,12 +157,6 @@ export default function RegisterPage() {
                                 {...register("password", {
                                     required: "Password is required",
                                     minLength: { value: 8, message: "Password must be at least 8 characters" },
-                                    pattern: {
-                                        value:
-                                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-                                        message:
-                                            "Must contain uppercase, lowercase and number",
-                                    },
                                 })}
                                 className="w-full outline-none text-gray-800 bg-transparent placeholder:text-gray-400"
                             />
@@ -237,19 +190,19 @@ export default function RegisterPage() {
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2-5.999a6 6 0 00-6 6v4.001a6 6 0 006-6h-4z"></path>
                                 </svg>
-                                Creating account...
+                                Logging in...
                             </span>
                         ) : (
-                            "Register"
+                            "Login"
                         )}
                     </button>
                 </form>
 
                 <p className="text-center text-sm text-gray-600 mt-6">
-                    Already have an account?{" "}
-                    <Link href="/login" className="text-indigo-600 font-semibold hover:underline">
-                        Login
-                    </Link>
+                    Don&apos;t have an account?{" "}
+                    <a href="/register" className="text-indigo-600 font-semibold hover:underline">
+                        Register
+                    </a>
                 </p>
             </div>
         </div>
