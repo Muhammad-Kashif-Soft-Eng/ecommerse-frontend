@@ -3,7 +3,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "Ecommerse Frontend",
+  title: "Byte Bazaar || Ecommerse web app by Kashif.",
 };
 
 export default function RootLayout({ children }) {
