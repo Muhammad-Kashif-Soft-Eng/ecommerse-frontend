@@ -34,7 +34,7 @@ export default function Navbar({ cartCount = 0 }) {
                             </svg>
                         </div>
                         <div className="flex flex-col leading-tight">
-                            <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">Lumiq</span>
+                            <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">Byte Bazaar</span>
                             <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">Premium Store</span>
                         </div>
                     </Link>
@@ -46,9 +46,14 @@ export default function Navbar({ cartCount = 0 }) {
                             <span>Register</span>
                         </Link>
 
-                        <Link href="/login" className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-700 hover:text-teal-600 hover:bg-teal-50/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/50">
+                        <Link
+                            href="/login"
+                            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-700 hover:text-teal-600 hover:bg-teal-50/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/50"
+                        >
+                            <FaUserAlt className="w-4 h-4" />
                             <span>Sign in</span>
                         </Link>
+
 
                         {/* Mobile Toggle */}
                         <button

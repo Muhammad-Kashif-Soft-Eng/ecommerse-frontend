@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import API from "@/lib/axios";
 
 import {
     FaEnvelope,
@@ -12,9 +13,6 @@ import {
     FaEye,
     FaEyeSlash,
 } from "react-icons/fa";
-
-// const API = "http://localhost:5000/api";
-const API = process.env.NEXT_PUBLIC_API_URL;
 
 export default function LoginPage() {
 
@@ -37,7 +35,7 @@ export default function LoginPage() {
         setSuccess(false);
 
         try {
-            await axios.post(`${API}/auth/login`, formData);
+            await API.post(`/auth/login`, formData);
             setSuccess(true);
             reset();
 

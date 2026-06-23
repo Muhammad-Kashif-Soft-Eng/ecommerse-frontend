@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import API from "@/lib/axios";
 
 import {
     FaUser,
@@ -14,8 +15,6 @@ import {
     FaEye,
     FaEyeSlash,
 } from "react-icons/fa";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export default function RegisterPage() {
 
@@ -46,7 +45,7 @@ export default function RegisterPage() {
         };
 
         try {
-            await axios.post(`${API_URL}/auth/register`, payload);
+            await API.post(`/auth/register`, payload);
             setSuccess(true);
             reset();
 
