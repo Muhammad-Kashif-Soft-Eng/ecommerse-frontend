@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -103,7 +102,7 @@ export default function RegisterPage() {
                     <div className="mb-6 flex items-start gap-3 bg-green-50 border border-green-200 text-green-700 rounded-xl px-4 py-3 shadow-sm transition-all duration-300">
                         <FaCheckCircle className="mt-0.5 shrink-0 text-green-500 text-lg" />
                         <div>
-                            <p className="font-medium text-sm">Account created successfully!</p>
+                            <p className="font-medium text-sm">Account created  and confirmation email sent successfully!</p>
                             <p className="text-xs text-green-600 mt-1">You can now log in with your credentials.</p>
                         </div>
                     </div>

@@ -36,7 +36,7 @@ export default function UpdateProductPage() {
 
         setTimeout(() => {
             setResponseMessage("");
-            router.push("/products");
+            router.push("/dashboard");
         }, 1500);
     };
 

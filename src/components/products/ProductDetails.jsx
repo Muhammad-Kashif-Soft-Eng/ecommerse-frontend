@@ -20,8 +20,7 @@ export default function ProductDetails({ product }) {
                             fill
                             className="object-cover"
                             sizes="100vw"
-                            placeholder="blur"
-                            blurDataURL={product.image.replace("/upload/", "/upload/w_10,q_10/")}
+                            unoptimized
                         />
                     </div>
                 ) : (

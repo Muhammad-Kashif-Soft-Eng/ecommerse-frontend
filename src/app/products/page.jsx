@@ -50,15 +50,36 @@ export default function ProductsPage() {
             <div className="max-w-7xl mx-auto">
                 {loading && (
                     <div className="flex justify-center items-center py-12">
-                        <p className="text-slate-600 animate-pulse">Loading products...</p>
+                        <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+                        <span className="ml-3 text-slate-600 font-medium">Loading products...</span>
                     </div>
                 )}
 
                 {error && (
                     <div className="flex justify-center items-center py-12">
-                        <p className="text-red-600 font-medium">Error: {error}</p>
+                        <div className="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg shadow-sm">
+                            {/* Error Icon */}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5 text-red-600"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 9v2m0 4h.01M12 5a7 7 0 100 14a7 7 0 000-14z"
+                                />
+                            </svg>
+                            {/* Error Message */}
+                            <span className="font-medium">Error:</span>
+                            <span>{error}</span>
+                        </div>
                     </div>
                 )}
+
 
                 {!loading && !error && (
                     <div className="mb-4">

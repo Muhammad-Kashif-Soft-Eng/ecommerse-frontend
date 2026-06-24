@@ -24,19 +24,38 @@ export const getProducts = async () => {
 export const getProductById = async (id) => {
   try {
     const res = await api.get(`/products/${id}`);
+    const product = res.data?.product;
+
+    if (!product) {
+      return {
+        success: false,
+        message: "Product not found.",
+        data: null,
+      };
+    }
+
     return {
-      success: res.data?.success ?? true,
-      message: res.data?.message || "Product fetched successfully.",
-      data: res.data?.product || {},
+      success: true,
+      message: "Product fetched successfully.",
+      data: product,
     };
   } catch (err) {
+    // If backend sends 404, treat as not found
+    if (err.response?.status === 404) {
+      return {
+        success: false,
+        message: "Product not found.",
+        data: null,
+      };
+    }
     return {
       success: false,
       message: err.response?.data?.message || "Internal Server Error.",
-      data: {},
+      data: null,
     };
   }
 };
+
 
 // Create a new product
 

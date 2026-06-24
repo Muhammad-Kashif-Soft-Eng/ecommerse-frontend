@@ -29,13 +29,18 @@ export default function CreateProductComponent() {
         const res = await createProduct(formData);
         setResponseMessage(res.message);
 
-        reset();
-
         setTimeout(() => {
             setResponseMessage("");
-            router.push("/products");
-        }, 1500);
-        
+        }, 3000);
+
+        if (res.success) {
+            reset();
+
+            setTimeout(() => {
+                router.push("/dashboard");
+            }, 1500);
+        };
+
     };
 
     return (
