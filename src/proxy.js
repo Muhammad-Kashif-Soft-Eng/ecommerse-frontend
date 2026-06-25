@@ -9,7 +9,6 @@ export function middleware(request) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    // Prevent logged-in users from accessing auth pages
     if (
         token &&
         (pathname === "/login" || pathname === "/register")

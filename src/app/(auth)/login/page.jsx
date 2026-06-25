@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import API from "@/lib/axios";
@@ -29,6 +29,21 @@ export default function LoginPage() {
         reset,
     } = useForm({ mode: "onBlur" });
 
+    // Handle redirect and cookie setting after successful login
+    useEffect(() => {
+        if (success) {
+            if (typeof window !== "undefined") {
+                document.cookie = "isLoggedIn=true; path=/; max-age=86400";
+            }
+            
+            const redirectTimer = setTimeout(() => {
+                router.push("/dashboard");
+            }, 3000);
+            
+            return () => clearTimeout(redirectTimer);
+        }
+    }, [success, router]);
+
     const onSubmit = async (formData) => {
         setServerError("");
         setSuccess(false);
@@ -40,7 +55,15 @@ export default function LoginPage() {
                 {
                     withCredentials: true,
                 }
-            );            
+            );
+            
+            // Store token if it's in the response
+            if (response.data?.token) {
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("authToken", response.data.token);
+                }
+            }
+            
             setSuccess(true);
             reset();
 
