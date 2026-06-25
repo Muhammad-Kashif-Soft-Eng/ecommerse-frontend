@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export function proxy(request) {
+export default function proxy(request) {
     const token = request.cookies.get("token")?.value;
     const { pathname } = request.nextUrl;
 
@@ -20,5 +20,5 @@ export function proxy(request) {
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*", "/login", "/register"],
+    matcher: ["/dashboard", "/dashboard/:path*", "/login", "/register"],
 };
