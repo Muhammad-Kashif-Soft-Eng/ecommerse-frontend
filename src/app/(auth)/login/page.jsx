@@ -35,7 +35,13 @@ export default function LoginPage() {
         setSuccess(false);
 
         try {
-            await API.post(`/auth/login`, formData);
+            await API.post(
+                `/auth/login`,
+                formData,
+                {
+                    withCredentials: true,
+                }
+            );
             setSuccess(true);
             reset();
 
@@ -68,11 +74,10 @@ export default function LoginPage() {
     };
 
     const fieldWrapperClass = (hasError) =>
-    `flex items-center border rounded-xl px-4 py-3 transition-all duration-200 ${
-        hasError
+        `flex items-center border rounded-xl px-4 py-3 transition-all duration-200 ${hasError
             ? "border-red-300 bg-red-50 shadow-sm"
             : "border-gray-200 bg-white hover:border-gray-300 shadow-sm"
-    } focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500`;
+        } focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500`;
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4 sm:p-6 md:p-8 relative overflow-hidden">
@@ -91,7 +96,7 @@ export default function LoginPage() {
                     <p className="text-gray-500 mt-2 text-sm md:text-base">
                         Log in to your account to continue.
                     </p>
- </div>
+                </div>
 
                 {/* Success Message */}
                 {success && (

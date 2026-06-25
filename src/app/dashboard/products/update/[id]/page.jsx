@@ -15,7 +15,7 @@ export default function UpdateProductPage() {
     useEffect(() => {
         const fetchProduct = async () => {
             const product = await getProductById(id);
-            reset(product); // prefill form with product data
+            reset(product); 
         };
         fetchProduct();
     }, [id, reset]);
