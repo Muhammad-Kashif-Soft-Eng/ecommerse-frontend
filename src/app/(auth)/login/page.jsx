@@ -54,11 +54,6 @@ export default function LoginPage() {
             setSuccess(true);
             reset();
 
-            // Redirect after a shorter delay, or immediately
-            setTimeout(() => {
-                router.push("/dashboard");
-            }, 1000);
-
         } catch (err) {
             console.error(err);
             const status = err.response?.status;
