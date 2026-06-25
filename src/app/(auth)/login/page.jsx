@@ -40,17 +40,7 @@ export default function LoginPage() {
                 {
                     withCredentials: true,
                 }
-            );
-            
-            // Store token if it's in the response
-            if (response.data?.token) {
-                if (typeof window !== "undefined") {
-                    localStorage.setItem("authToken", response.data.token);
-                    // Set a flag to indicate user is logged in
-                    document.cookie = "isLoggedIn=true; path=/; max-age=86400";
-                }
-            }
-            
+            );            
             setSuccess(true);
             reset();
 
