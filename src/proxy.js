@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export function proxy(request) {
 
-    const authMarker = request.cookies.get("isLoggedIn");
+    const authMarker = request.cookies.get("token");
     const { pathname } = request.nextUrl;
 
     if (!authMarker && pathname.startsWith("/dashboard")) {
