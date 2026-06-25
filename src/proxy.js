@@ -2,14 +2,14 @@ import { NextResponse } from "next/server";
 
 export function proxy(request) {
 
-    const token = request.cookies.get("token");
+    const authMarker = request.cookies.get("isLoggedIn");
     const { pathname } = request.nextUrl;
 
-    if (!token && pathname.startsWith("/dashboard")) {
+    if (!authMarker && pathname.startsWith("/dashboard")) {
         return NextResponse.redirect(new URL('/login', request.url));
     }
 
-    if (token && (pathname === "/login" || pathname === "/register")) {
+    if (authMarker && (pathname === "/login" || pathname === "/register")) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
     }
 

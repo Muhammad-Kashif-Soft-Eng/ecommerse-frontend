@@ -55,6 +55,11 @@ export default function DashboardLayout({ children }) {
     const handleLogout = async () => {
         try {
             await api.post("/auth/logout");
+
+            if (typeof window !== "undefined") {
+                document.cookie = "isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+            }
+
             router.push("/login");
         } catch (err) {
             console.error("Logout failed:", err);
