@@ -34,19 +34,30 @@ export default function LoginPage() {
         setSuccess(false);
 
         try {
-            await API.post(
+            const response = await API.post(
                 `/auth/login`,
                 formData,
                 {
                     withCredentials: true,
                 }
             );
+            
+            // Store token if it's in the response
+            if (response.data?.token) {
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("authToken", response.data.token);
+                    // Set a flag to indicate user is logged in
+                    document.cookie = "isLoggedIn=true; path=/; max-age=86400";
+                }
+            }
+            
             setSuccess(true);
             reset();
 
+            // Redirect after a shorter delay, or immediately
             setTimeout(() => {
                 router.push("/dashboard");
-            }, 2000);
+            }, 1000);
 
         } catch (err) {
             console.error(err);

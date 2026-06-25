@@ -57,6 +57,8 @@ export default function DashboardLayout({ children }) {
             await api.post("/auth/logout");
 
             if (typeof window !== "undefined") {
+                // Clear all auth-related data
+                localStorage.removeItem("authToken");
                 document.cookie = "isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
             }
 

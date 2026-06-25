@@ -1,25 +1,29 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 export function proxy(request) {
-
-    const authMarker = request.cookies.get("token");
     const { pathname } = request.nextUrl;
 
-    if (!authMarker && pathname.startsWith("/dashboard")) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+    // Protected routes that require authentication
+    const protectedRoutes = ['/dashboard'];
+    
+    // Check if the current route is protected
+    const isProtectedRoute = protectedRoutes.some(route => 
+        pathname.startsWith(route)
+    );
 
-    if (authMarker && (pathname === "/login" || pathname === "/register")) {
-        return NextResponse.redirect(new URL('/dashboard', request.url));
+    if (isProtectedRoute) {
+        // Check for authentication token in cookies
+        const cookie = request.cookies.get('isLoggedIn');
+        
+        if (!cookie) {
+            // Redirect to login if not authenticated
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
     }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: [
-        '/dashboard/:path*',
-        '/login',
-        '/register'
-    ]
+    matcher: ['/dashboard/:path*', '/profile/:path*'],
 };
