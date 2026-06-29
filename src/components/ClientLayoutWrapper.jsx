@@ -7,12 +7,13 @@ import Footer from "@/components/Footer";
 export default function ClientLayoutWrapper({ children }) {
     const pathname = usePathname();
     const isDashboard = pathname?.startsWith("/dashboard");
+    const isAuthRoute = pathname?.startsWith("/login") || pathname?.startsWith("/register");
 
     return (
         <>
-            {!isDashboard && <Navbar />}
+            {!isDashboard && !isAuthRoute && <Navbar />}
             {children}
-            {!isDashboard && <Footer />}
+            {!isDashboard && !isAuthRoute && <Footer />}
         </>
     );
 }

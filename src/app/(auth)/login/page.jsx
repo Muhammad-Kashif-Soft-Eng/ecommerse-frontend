@@ -29,17 +29,12 @@ export default function LoginPage() {
         reset,
     } = useForm({ mode: "onBlur" });
 
-    // Handle redirect and cookie setting after successful login
     useEffect(() => {
         if (success) {
-            if (typeof window !== "undefined") {
-                document.cookie = "isLoggedIn=true; path=/; max-age=86400";
-            }
-            
             const redirectTimer = setTimeout(() => {
                 router.push("/dashboard");
-            }, 3000);
-            
+            }, 1000);
+
             return () => clearTimeout(redirectTimer);
         }
     }, [success, router]);
@@ -49,21 +44,7 @@ export default function LoginPage() {
         setSuccess(false);
 
         try {
-            const response = await API.post(
-                `/auth/login`,
-                formData,
-                {
-                    withCredentials: true,
-                }
-            );
-            
-            // Store token if it's in the response
-            if (response.data?.token) {
-                if (typeof window !== "undefined") {
-                    localStorage.setItem("authToken", response.data.token);
-                }
-            }
-            
+            await API.post(`/auth/login`, formData);
             setSuccess(true);
             reset();
 

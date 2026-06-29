@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 
 export default function proxy(request) {
+
+    console.log("Middleware running");
+
     const token = request.cookies.get("token")?.value;
     const { pathname } = request.nextUrl;
 

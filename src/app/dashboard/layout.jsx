@@ -30,6 +30,7 @@ export default function DashboardLayout({ children }) {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const prevPathRef = useRef(pathname);
 
     useEffect(() => {
@@ -51,22 +52,37 @@ export default function DashboardLayout({ children }) {
         return () => window.removeEventListener("resize", onResize);
     }, [sidebarOpen]);
 
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                await api.get("/auth/me");
+            } catch (err) {
+                router.replace("/login");
+            } finally {
+                setIsCheckingAuth(false);
+            }
+        };
+
+        checkAuth();
+    }, [router]);
+
     // Logout handler
     const handleLogout = async () => {
         try {
             await api.post("/auth/logout");
-
-            if (typeof window !== "undefined") {
-                // Clear all auth-related data
-                localStorage.removeItem("authToken");
-                document.cookie = "isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
-            }
-
             router.push("/login");
         } catch (err) {
             console.error("Logout failed:", err);
         }
     };
+
+    if (isCheckingAuth) {
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-cyan-50 via-white to-purple-50">
+                <div className="text-slate-600">Checking session...</div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex min-h-screen bg-gradient-to-br from-cyan-50 via-white to-purple-50">
